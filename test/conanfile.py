@@ -1,10 +1,12 @@
 from conans import ConanFile, CMake
 import os
 
+channel = os.getenv("CONAN_CHANNEL", "testing")
+username = os.getenv("CONAN_USERNAME", "memsharded")
 
 class ZMQTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "ZMQ/4.1.1@memsharded/testing"
+    requires = "ZMQ/4.1.1@%s/%s" % (username, channel)
     generators = "cmake"
 
     def build(self):
