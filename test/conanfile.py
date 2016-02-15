@@ -18,6 +18,7 @@ class ZMQTestConan(ConanFile):
         self.copy("*.dll", "bin", "bin")
 
     def test(self):
+        print "Running test"
         server = "bin%sserver" % os.sep
         import subprocess
         pid = subprocess.Popen(server)
