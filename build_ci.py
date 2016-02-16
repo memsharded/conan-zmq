@@ -24,7 +24,7 @@ if __name__ == "__main__":
     args = " ".join(sys.argv[1:]) # Pass additional parameters to "conan test" command, maybe "--build missing"
     builder = ConanMultiPackager(args, username="memsharded", channel="testing")
     
-    builder.add_common_builds(shared_option_name="ZMQ:shared", visual_versions=[10])
+    builder.add_common_builds(shared_option_name="ZMQ:shared", visual_versions=[10, 12, 14])
     
     if use_docker:  
         builder.docker_pack(current_page, total_pages, gcc_versions)
