@@ -14,22 +14,23 @@ class ZMQConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = "shared=False"
     exports = "FindZeroMQ.cmake"
+    generators = "cmake"
 
     def source(self):
         self.run("git clone https://github.com/zeromq/zeromq4-1.git")
         self.run("cd zeromq4-1 && git checkout 203cd808e249c06e1818cc3d70de4e48caf5f92b")
         tools.replace_in_file("zeromq4-1/CMakeLists.txt", "project(ZeroMQ)", """project(ZeroMQ)
 
-        string(REPLACE "/MD" ${CONAN_LINK_RUNTIME} CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
-        string(REPLACE "/MDd" ${CONAN_LINK_RUNTIME} CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
-        string(REPLACE "/MD" ${CONAN_LINK_RUNTIME} CMAKE_C_FLAGS_RELEASE ${CMAKE_C_FLAGS_RELEASE})
-        string(REPLACE "/MDd" ${CONAN_LINK_RUNTIME} CMAKE_C_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 """)
         tools.replace_in_file("zeromq4-1/CMakeLists.txt",
                                 'check_library_exists(iphlpapi printf "" HAVE_IPHLAPI)',
-                                """set(HAVE_WS2_32 1)
+                                """if(MSVC)
+				set(HAVE_WS2_32 1)
                                 set(HAVE_RPCRT4 1)
-                                set(HAVE_IPHLAPI 1)""")
+                                set(HAVE_IPHLAPI 1)
+				endif()""")
             
     def build(self):
         cmake = CMake(self.settings)
@@ -41,11 +42,11 @@ class ZMQConan(ConanFile):
         self.copy_headers("*", "zeromq4-1/include")
         self.copy("FindZeroMQ.cmake")
         if not self.options.shared:
-            self.copy("*libzmq-mt-s*.lib", "lib", "lib", keep_path=False)
-            self.copy("*.a", "lib", "build/lib", keep_path=False)  # Linux
+            self.copy("*libzmq*-mt-s*.lib", "lib", "lib", keep_path=False)
+            self.copy("*.a", "lib", "lib", keep_path=False)  # Linux
         else:
-            self.copy("*libzmq-mt-4_1_1.lib", "lib", "lib", keep_path=False)
-            self.copy("*libzmq-mt-gd-4_1_1.lib", "lib", "lib", keep_path=False)
+            self.copy("*libzmq*-mt-4_1_1.lib", "lib", "lib", keep_path=False)
+            self.copy("*libzmq*-mt-gd-4_1_1.lib", "lib", "lib", keep_path=False)
             self.copy("*.dll", "bin", "bin", keep_path=False)
             self.copy("libzmq.so", "lib", "lib", keep_path=False)  # Linux
 
@@ -53,10 +54,11 @@ class ZMQConan(ConanFile):
         if not self.settings.os == "Windows":
             self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.so"]
         else:
+            ver = "-v100" if self.settings.compiler=="Visual Studio" and self.settings.compiler.version==10 else ""
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
-            self.cpp_info.libs = ["libzmq-mt%s-4_1_1" % fix]
+            self.cpp_info.libs = ["libzmq%s-mt%s-4_1_1" % (ver, fix)]
 
         if not self.options.shared:
             if self.settings.compiler == "Visual Studio":

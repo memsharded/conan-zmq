@@ -1,0 +1,24 @@
+language: python
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - CONAN_UPLOAD: 1
+    - CONAN_REFERENCE: "zmq/4.1.1"
+    - CONAN_USERNAME: "memsharded"
+    - CONAN_CHANNEL: "testing"
+    - CONAN_TOTAL_PAGES: 1
+    - CONAN_USE_DOCKER: 1
+  matrix:
+    - CONAN_GCC_VERSIONS: 4.8
+    - CONAN_GCC_VERSIONS: 4.9
+    - CONAN_GCC_VERSIONS: 5.2
+    - CONAN_GCC_VERSIONS: 5.3
+
+install:
+  - pip install conan_package_tools # It install conan too
+  - conan user # It creates the conan data directory
+
+script:
+  - python build_ci.py
