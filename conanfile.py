@@ -20,7 +20,7 @@ class ZMQConan(ConanFile):
         self.run("git clone https://github.com/zeromq/zeromq4-1.git")
         self.run("cd zeromq4-1 && git checkout 203cd808e249c06e1818cc3d70de4e48caf5f92b")
         tools.replace_in_file("zeromq4-1/CMakeLists.txt", "project(ZeroMQ)", """project(ZeroMQ)
-
+add_definitions (-D_GLIBCXX_USE_CXX11_ABI=0)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
