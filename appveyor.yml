@@ -34,4 +34,4 @@ install:
   - conan user # It creates the conan data directory
 
 test_script:
-  - python build_ci.py
+  - python build.py

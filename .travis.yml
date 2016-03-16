@@ -21,4 +21,4 @@ install:
   - conan user # It creates the conan data directory
 
 script:
-  - python build_ci.py
+  - python build.py

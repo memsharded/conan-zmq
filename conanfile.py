@@ -20,7 +20,6 @@ class ZMQConan(ConanFile):
         self.run("git clone https://github.com/zeromq/zeromq4-1.git")
         self.run("cd zeromq4-1 && git checkout 203cd808e249c06e1818cc3d70de4e48caf5f92b")
         tools.replace_in_file("zeromq4-1/CMakeLists.txt", "project(ZeroMQ)", """project(ZeroMQ)
-add_definitions (-D_GLIBCXX_USE_CXX11_ABI=0)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
@@ -28,13 +27,12 @@ conan_basic_setup()
                                 'check_library_exists(iphlpapi printf "" HAVE_IPHLAPI)',
                                 """if(MSVC)
 				set(HAVE_WS2_32 1)
-                                set(HAVE_RPCRT4 1)
-                                set(HAVE_IPHLAPI 1)
+        set(HAVE_RPCRT4 1)
+        set(HAVE_IPHLAPI 1)
 				endif()""")
             
     def build(self):
         cmake = CMake(self.settings)
-        print "CMAKE COMMAND LINE ", cmake.command_line
         self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF' % cmake.command_line)
         self.run("cmake --build . %s" % cmake.build_config)
 
