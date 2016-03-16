@@ -32,7 +32,9 @@ matrix:
          env: CONAN_CURRENT_PAGE=1
 
 install:
+  - chmod +x .travis/install.sh
   - ./.travis/install.sh
 
 script:
+  - chmod +x .travis/run.sh
   - ./.travis/run.sh
