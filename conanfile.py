@@ -33,7 +33,7 @@ conan_basic_setup()
             
     def build(self):
         cmake = CMake(self.settings)
-        self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF' % cmake.command_line)
+        self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF -DZMQ_BUILD_FRAMEWORK=OFF' % cmake.command_line)
         self.run("cmake --build . %s" % cmake.build_config)
 
     def package(self):
@@ -46,11 +46,13 @@ conan_basic_setup()
             self.copy("*libzmq*-mt-4_1_1.lib", "lib", "lib", keep_path=False)
             self.copy("*libzmq*-mt-gd-4_1_1.lib", "lib", "lib", keep_path=False)
             self.copy("*.dll", "bin", "bin", keep_path=False)
+            self.copy("*.dylib", "lib", "lib", keep_path=False)
             self.copy("libzmq.so", "lib", "lib", keep_path=False)  # Linux
 
     def package_info(self):
         if not self.settings.os == "Windows":
-            self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.so"]
+            shared_ext = "so" if self.settings.os == "Linux" else "dylib"
+            self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.%s" % shared_ext]
         else:
             ver = "-v100" if self.settings.compiler=="Visual Studio" and self.settings.compiler.version==10 else ""
             stat_fix = "s" if not self.options.shared else ""

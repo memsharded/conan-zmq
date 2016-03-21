@@ -16,14 +16,14 @@ class ZMQTestConan(ConanFile):
 
     def imports(self):
         self.copy("*.dll", "bin", "bin")
+        self.copy("*.dylib", "bin", "lib")
 
     def test(self):
         print "Running test"
-        server = "bin%sserver" % os.sep
+        os.chdir("bin")
+        server = ".%sserver" % os.sep
         import subprocess
         pid = subprocess.Popen(server)
         print "Lets launch client for ", server
-
-        os.chdir("bin")
         self.run(".%sclient > null" % os.sep)
         pid.terminate()
