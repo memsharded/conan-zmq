@@ -67,3 +67,6 @@ conan_basic_setup()
 
             if not self.settings.os == "Windows":
                 self.cpp_info.cppflags = ["-pthread"]
+        
+        if self.settings.os == "Linux":
+            self.cpp_info.libs.extend(["pthread", "dl", "rt"])
