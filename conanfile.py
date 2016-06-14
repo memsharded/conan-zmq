@@ -6,7 +6,7 @@ class ZMQConan(ConanFile):
     """ ZMQ is a network, sockets on steroids library. 
     Safe for use in commercial applications LGPL v3 with static linking exception
     """
-    name = "ZMQ"
+    name = "libzmq"
     version = "4.1.1"
     license = "LGPL"
     url = "https://github.com/memsharded/conan-zmq.git"
