@@ -6,7 +6,7 @@ username = os.getenv("CONAN_USERNAME", "memsharded")
 
 class ZMQTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "libzmq/4.1.1@%s/%s" % (username, channel)
+    requires = "libzmq/4.1.5@%s/%s" % (username, channel)
     generators = "cmake"
 
     def build(self):
@@ -19,11 +19,11 @@ class ZMQTestConan(ConanFile):
         self.copy("*.dylib", "bin", "lib")
 
     def test(self):
-        print "Running test"
+        print ("Running test")
         os.chdir("bin")
         server = ".%sserver" % os.sep
         import subprocess
         pid = subprocess.Popen(server)
-        print "Lets launch client for ", server
+        print ("Lets launch client for ", server)
         self.run(".%sclient > null" % os.sep)
         pid.terminate()

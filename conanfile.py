@@ -7,7 +7,8 @@ class ZMQConan(ConanFile):
     Safe for use in commercial applications LGPL v3 with static linking exception
     """
     name = "libzmq"
-    version = "4.1.1"
+    version = "4.1.5"
+    version_flat = "4_1_5"
     license = "LGPL"
     url = "https://github.com/memsharded/conan-zmq.git"
     settings = "os", "compiler", "build_type", "arch"
@@ -18,18 +19,11 @@ class ZMQConan(ConanFile):
 
     def source(self):
         self.run("git clone https://github.com/zeromq/zeromq4-1.git")
-        self.run("cd zeromq4-1 && git checkout 203cd808e249c06e1818cc3d70de4e48caf5f92b")
+        self.run("cd zeromq4-1 && git checkout v4.1.5")
         tools.replace_in_file("zeromq4-1/CMakeLists.txt", "project(ZeroMQ)", """project(ZeroMQ)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
-        tools.replace_in_file("zeromq4-1/CMakeLists.txt",
-                                'check_library_exists(iphlpapi printf "" HAVE_IPHLAPI)',
-                                """if(MSVC)
-				set(HAVE_WS2_32 1)
-        set(HAVE_RPCRT4 1)
-        set(HAVE_IPHLAPI 1)
-				endif()""")
             
     def build(self):
         cmake = CMake(self.settings)
@@ -43,8 +37,8 @@ conan_basic_setup()
             self.copy("*libzmq*-mt-s*.lib", "lib", "lib", keep_path=False)
             self.copy("*.a", "lib", "lib", keep_path=False)  # Linux
         else:
-            self.copy("*libzmq*-mt-4_1_1.lib", "lib", "lib", keep_path=False)
-            self.copy("*libzmq*-mt-gd-4_1_1.lib", "lib", "lib", keep_path=False)
+            self.copy("*libzmq*-mt-%s.lib" % self.version_flat, "lib", "lib", keep_path=False)
+            self.copy("*libzmq*-mt-gd-%s.lib" % self.version_flat, "lib", "lib", keep_path=False)
             self.copy("*.dll", "bin", "bin", keep_path=False)
             self.copy("*.dylib", "lib", "lib", keep_path=False)
             self.copy("libzmq.so", "lib", "lib", keep_path=False)  # Linux
@@ -54,11 +48,13 @@ conan_basic_setup()
             shared_ext = "so" if self.settings.os == "Linux" else "dylib"
             self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.%s" % shared_ext]
         else:
-            ver = "-v100" if self.settings.compiler=="Visual Studio" and self.settings.compiler.version==10 else ""
+            ver = ""
+            if self.settings.compiler == "Visual Studio":
+                ver = "-v%s0" % self.settings.compiler.version
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
-            self.cpp_info.libs = ["libzmq%s-mt%s-4_1_1" % (ver, fix)]
+            self.cpp_info.libs = ["libzmq%s-mt%s-%s" % (ver, fix, self.version_flat)]
 
         if not self.options.shared:
             if self.settings.compiler == "Visual Studio":
