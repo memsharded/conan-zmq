@@ -24,7 +24,6 @@ class ZMQConan(ConanFile):
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
-        tools.replace_in_file("zeromq4-1/CMakeLists.txt", "if(MSVC_IDE)", "if(CMAKE_VS_PLATFORM_TOOLSET)")
           
     def build(self):
         cmake = CMake(self.settings)
@@ -50,8 +49,11 @@ conan_basic_setup()
             self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.%s" % shared_ext]
         else:
             ver = ""
-            #if self.settings.compiler == "Visual Studio":
-            #    ver = "-v%s0" % self.settings.compiler.version
+            if self.settings.compiler == "Visual Studio":
+                if str(self.settings.compiler.version) in ["11", "12", "14"]:  
+                    ver = "-v%s0" % self.settings.compiler.version
+                else:
+                    ver = "-"
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
