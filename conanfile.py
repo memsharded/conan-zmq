@@ -24,7 +24,8 @@ class ZMQConan(ConanFile):
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
-            
+        tools.replace_in_file("zeromq4-1/CMakeLists.txt", "if(MSVC_IDE)", "if(CMAKE_VS_PLATFORM_TOOLSET)")
+          
     def build(self):
         cmake = CMake(self.settings)
         self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF -DZMQ_BUILD_FRAMEWORK=OFF' % cmake.command_line)
