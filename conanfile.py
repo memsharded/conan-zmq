@@ -50,8 +50,8 @@ conan_basic_setup()
             self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.%s" % shared_ext]
         else:
             ver = ""
-            if self.settings.compiler == "Visual Studio":
-                ver = "-v%s0" % self.settings.compiler.version
+            #if self.settings.compiler == "Visual Studio":
+            #    ver = "-v%s0" % self.settings.compiler.version
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
