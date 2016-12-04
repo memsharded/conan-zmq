@@ -53,14 +53,14 @@ conan_basic_setup()
                     ver = "-v%s0" % self.settings.compiler.version
                 else:
                     ver = "-"
-            stat_fix = "s" if not self.options.shared else ""
+            static, stat_fix = ("-static", "s") if not self.options.shared else ("", "")
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
-            self.cpp_info.libs = ["libzmq%s-mt%s-%s" % (ver, fix, self.version_flat)]
+            self.cpp_info.libs = ["libzmq%s%s-mt%s-%s" % (static, ver, fix, self.version_flat)]
 
         if not self.options.shared:
             if self.settings.compiler == "Visual Studio":
-                self.cpp_info.libs.append("ws2_32")
+                self.cpp_info.libs.extend(["ws2_32", "wsock32","Iphlpapi"])
             self.cpp_info.defines = ["ZMQ_STATIC"]
 
             if not self.settings.os == "Windows":

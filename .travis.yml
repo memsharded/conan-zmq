@@ -6,7 +6,7 @@ services:
 env:
   global:
     - CONAN_UPLOAD: 1
-    - CONAN_REFERENCE: "libzmq/4.1.5"
+    - CONAN_REFERENCE: "libzmq/4.2.0"
     - CONAN_USERNAME: "memsharded"
     - CONAN_CHANNEL: "testing"
     - CONAN_TOTAL_PAGES: 1
