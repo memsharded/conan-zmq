@@ -19,7 +19,7 @@ class ZMQConan(ConanFile):
     def source(self):
         self.run("git clone https://github.com/zeromq/libzmq.git")
         self.run("cd libzmq && git checkout v4.2.0")
-        tools.replace_in_file("libzmq/CMakeLists.txt", "project(ZeroMQ)", """project(ZeroMQ)
+        tools.replace_in_file("libzmq/CMakeLists.txt", "project (ZeroMQ)", """project (ZeroMQ)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 """)
@@ -40,12 +40,11 @@ conan_basic_setup()
             self.copy("*libzmq*-mt-gd-%s.lib" % self.version_flat, "lib", "lib", keep_path=False)
             self.copy("*.dll", "bin", "bin", keep_path=False)
             self.copy("*.dylib", "lib", "lib", keep_path=False)
-            self.copy("libzmq.so", "lib", "lib", keep_path=False)  # Linux
+            self.copy("libzmq.so*", "lib", "lib", keep_path=False)  # Linux
 
     def package_info(self):
-        if not self.settings.os == "Windows":
-            shared_ext = "so" if self.settings.os == "Linux" else "dylib"
-            self.cpp_info.libs = ["libzmq-static.a"] if not self.options.shared else ["libzmq.%s" % shared_ext]
+        if self.settings.os != "Windows":
+            self.cpp_info.libs = ["zmq-static"] if not self.options.shared else ["zmq"]
         else:
             ver = ""
             if self.settings.compiler == "Visual Studio":
