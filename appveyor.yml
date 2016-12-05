@@ -8,6 +8,7 @@ environment:
     CONAN_REFERENCE: "libzmq/4.2.0"
     CONAN_USERNAME: "memsharded"
     CONAN_CHANNEL: "testing"
+    CONAN_STABLE_BRANCH_PATTERN: "always use channel"
     CONAN_TOTAL_PAGES: 16
 
     matrix:
