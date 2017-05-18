@@ -25,5 +25,7 @@ class ZMQTestConan(ConanFile):
         import subprocess
         pid = subprocess.Popen(server)
         print ("Lets launch client for ", server)
+        import time
+        time.sleep(1)
         self.run(".%sclient > null" % os.sep)
         pid.terminate()
