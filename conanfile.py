@@ -1,5 +1,4 @@
 from conans import ConanFile, CMake, tools
-import os
 
 
 class ZMQConan(ConanFile):
@@ -50,10 +49,8 @@ conan_basic_setup()
         else:
             ver = ""
             if self.settings.compiler == "Visual Studio":
-                if str(self.settings.compiler.version) in ["11", "12", "14"]:  
-                    ver = "-v%s0" % self.settings.compiler.version
-                else:
-                    ver = "-"
+                v = str(self.settings.compiler.version)
+                ver = {"11": "-v110", "12": "-v120", "14": "-v140", "15": "-v141"}.get(v, "-")
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
