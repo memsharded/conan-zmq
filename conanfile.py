@@ -50,7 +50,7 @@ conan_basic_setup()
             ver = ""
             if self.settings.compiler == "Visual Studio":
                 v = str(self.settings.compiler.version)
-                ver = {"11": "-v110", "12": "-v120", "14": "-v140", "15": "-v141"}.get(v, "-")
+                ver = "-v141" if v == "15" else ("-v%s" % v)
             stat_fix = "s" if not self.options.shared else ""
             debug_fix = "gd" if self.settings.build_type == "Debug" else ""
             fix = ("-%s%s" % (stat_fix, debug_fix)) if stat_fix or debug_fix else ""
