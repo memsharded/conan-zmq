@@ -21,6 +21,7 @@ class ZMQTestConan(ConanFile):
     def test(self):
         print ("Running test")
         os.chdir("bin")
+        print("FILES: %s" % os.listdir("."))
         server = ".%sserver" % os.sep
         import subprocess
         pid = subprocess.Popen(server)
