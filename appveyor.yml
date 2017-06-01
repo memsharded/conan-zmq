@@ -9,7 +9,7 @@ environment:
     CONAN_USERNAME: "memsharded"
     CONAN_CHANNEL: "testing"
     CONAN_TOTAL_PAGES: 16
-    VS150COMNTOOLS: "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/Common7/Tools/"
+    VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
 
     matrix:
         - CONAN_CURRENT_PAGE: 1
