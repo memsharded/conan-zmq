@@ -1,5 +1,5 @@
 build: false
-image: Visual Studio 2017
+
 environment:
     PYTHON: "C:\\Python27"
     PYTHON_VERSION: "2.7.8"
@@ -13,22 +13,22 @@ environment:
     VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
 
     matrix:
-        - CONAN_CURRENT_PAGE: 1
-        - CONAN_CURRENT_PAGE: 2  
-        - CONAN_CURRENT_PAGE: 3
-        - CONAN_CURRENT_PAGE: 4
-        - CONAN_CURRENT_PAGE: 5
-        - CONAN_CURRENT_PAGE: 6  
-        - CONAN_CURRENT_PAGE: 7
-        - CONAN_CURRENT_PAGE: 8
-        - CONAN_CURRENT_PAGE: 9
-        - CONAN_CURRENT_PAGE: 10 
-        - CONAN_CURRENT_PAGE: 11
-        - CONAN_CURRENT_PAGE: 12
-        - CONAN_CURRENT_PAGE: 13
-        - CONAN_CURRENT_PAGE: 14  
-        - CONAN_CURRENT_PAGE: 15
-        - CONAN_CURRENT_PAGE: 16
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+          CONAN_CURRENT_PAGE: VisualStudio_15_x86_64
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+          CONAN_CURRENT_PAGE: VisualStudio_15_x86
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_14_x86_64
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_14_x86
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_12_x86_64
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_12_x86
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_10_x86_64
+        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+          CONAN_CURRENT_PAGE: VisualStudio_10_x86
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
