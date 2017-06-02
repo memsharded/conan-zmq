@@ -21,22 +21,64 @@ env:
 
 matrix:
    include:
-       - os: osx 
-         osx_image: xcode8.3 # apple-clang 8.1
-         language: generic
-         env: CONAN_CURRENT_PAGE=1   
-       - os: osx 
-         osx_image: xcode8.2  # apple-clang 8.0
-         language: generic
-         env: CONAN_CURRENT_PAGE=1   
-       - os: osx
-         osx_image: xcode7.3 # apple-clang 7.3
-         language: generic
-         env: CONAN_CURRENT_PAGE=1
-       - os: osx 
-         osx_image: xcode7.2 # apple-clang 7.0
-         language: generic
-         env: CONAN_CURRENT_PAGE=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=4.8 CONAN_CURRENT_PAGE=gcc_48 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=4.9 CONAN_CURRENT_PAGE=gcc_49 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=5.2 CONAN_CURRENT_PAGE=gcc_52 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=5.3 CONAN_CURRENT_PAGE=gcc_53 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=5.4 CONAN_CURRENT_PAGE=gcc_54 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=6.2 CONAN_CURRENT_PAGE=gcc_62 CONAN_USE_DOCKER=1
+      - os: linux
+        services:
+          - docker
+        sudo: required
+        language: python
+        env: CONAN_GCC_VERSIONS=6.3 CONAN_CURRENT_PAGE=gcc_63 CONAN_USE_DOCKER=1   
+      - os: osx 
+        osx_image: xcode8.3 # apple-clang 8.1
+        language: generic
+        env: CONAN_CURRENT_PAGE=1   
+      - os: osx 
+        osx_image: xcode8.2  # apple-clang 8.0
+        language: generic
+        env: CONAN_CURRENT_PAGE=1   
+      - os: osx
+        osx_image: xcode7.3 # apple-clang 7.3
+        language: generic
+        env: CONAN_CURRENT_PAGE=1
+      - os: osx 
+        osx_image: xcode7.2 # apple-clang 7.0
+        language: generic
+        env: CONAN_CURRENT_PAGE=1
 
 install:
   - chmod +x .travis/install.sh
