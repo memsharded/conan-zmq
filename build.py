@@ -9,7 +9,7 @@ if __name__ == "__main__":
     for settings, options, env_vars, build_requires in builder.builds:
         if settings["compiler"] == "Visual Studio" and settings["compiler.version"] == "10" and settings["arch"] == "x86_64":
             continue
-        if settings["compiler"] == "gcc":
+        if settings["compiler"] in ("gcc", "apple-clang"):
             name = "%s_%s" % (settings["compiler"], settings["compiler.version"].replace(".", ""))
         elif settings["compiler"] == "Visual Studio":
             name = "%s_%s_%s" % (settings["compiler"].replace(" ", ""), settings["compiler.version"], settings["arch"])
