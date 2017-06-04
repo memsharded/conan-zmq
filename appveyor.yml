@@ -8,8 +8,7 @@ environment:
     CONAN_UPLOAD: 1
     CONAN_REFERENCE: "libzmq/4.1.5"
     CONAN_USERNAME: "memsharded"
-    CONAN_CHANNEL: "testing"
-    CONAN_TOTAL_PAGES: 16
+    CONAN_CHANNEL: "stable"
     VS150COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\Common7\\Tools\\"
 
     matrix:
@@ -26,13 +25,12 @@ environment:
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: VisualStudio_12_x86
         - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-          CONAN_CURRENT_PAGE: VisualStudio_10_x86_64
-        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
           CONAN_CURRENT_PAGE: VisualStudio_10_x86
 
 install:
   - set PATH=%PATH%;%PYTHON%/Scripts/
   - pip.exe install conan_package_tools # It install conan too
+  - pip.exe install conan --upgrade
   - conan user # It creates the conan data directory
 
 test_script:
