@@ -4,7 +4,7 @@ env:
      - CONAN_USERNAME: "memsharded"
      - CONAN_LOGIN_USERNAME: "memsharded"
      - CONAN_CHANNEL: "stable"
-     - CONAN_UPLOAD: "https://api.bintray.com/conan/memsharded/conan-common"
+     - CONAN_UPLOAD: "https://api.bintray.com/conan/memsharded/community"
 
 linux: &linux
    os: linux
