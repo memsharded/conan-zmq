@@ -27,7 +27,7 @@ conan_basic_setup()
           
     def build(self):
         cmake = CMake(self)
-        self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF -DZMQ_BUILD_FRAMEWORK=OFF' % cmake.command_line)
+        self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF -DWITH_DOC=OFF -DZMQ_BUILD_FRAMEWORK=OFF' % cmake.command_line)
         self.run("cmake --build . %s" % cmake.build_config)
 
     def build_id(self):
