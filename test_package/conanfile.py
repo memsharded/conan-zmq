@@ -1,24 +1,23 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 import os
 
-channel = os.getenv("CONAN_CHANNEL", "stable")
-username = os.getenv("CONAN_USERNAME", "memsharded")
 
 class ZMQTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "libzmq/4.1.5@%s/%s" % (username, channel)
     generators = "cmake"
 
     def build(self):
-        cmake = CMake(self.settings)
-        self.run('cmake "%s" %s' % (self.conanfile_directory, cmake.command_line))
-        self.run("cmake --build . %s" % cmake.build_config)
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
 
     def imports(self):
         self.copy("*.dll", "bin", "bin")
         self.copy("*.dylib", "bin", "lib")
 
     def test(self):
+        if tools.cross_building(self.settings):
+            return
         print ("Running test")
         os.chdir("bin")
         print("FILES: %s" % os.listdir("."))

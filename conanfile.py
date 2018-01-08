@@ -11,7 +11,7 @@ class ZMQConan(ConanFile):
     description = "ZMQ is a network, sockets on steroids library, http://zeromq.org/"
     license = "LGPL v3 with static linking exception"
     url = "https://github.com/memsharded/conan-zmq.git"
-    settings = "os", "compiler", "build_type", "arch"
+    settings = "os", "compiler", "build_type", "arch", "os_build", "arch_build"
     options = {"shared": [True, False]}
     default_options = "shared=False"
     exports = "FindZeroMQ.cmake"
@@ -27,8 +27,11 @@ conan_basic_setup()
           
     def build(self):
         cmake = CMake(self)
-        self.run('cmake zeromq4-1 %s -DZMQ_BUILD_TESTS=OFF -DWITH_DOC=OFF -DZMQ_BUILD_FRAMEWORK=OFF' % cmake.command_line)
-        self.run("cmake --build . %s" % cmake.build_config)
+        cmake.definitions["ZMQ_BUILD_TESTS"] = "OFF"
+        cmake.definitions["WITH_DOC"] = "OFF"
+        cmake.definitions["ZMQ_BUILD_FRAMEWORK"] = "OFF"   
+        cmake.configure(source_folder="zeromq4-1")
+        cmake.build()
 
     def build_id(self):
         self.info_build.options.shared = "Any"
