@@ -11,7 +11,7 @@ class ZMQConan(ConanFile):
     description = "ZMQ is a network, sockets on steroids library, http://zeromq.org/"
     license = "LGPL v3 with static linking exception"
     url = "https://github.com/memsharded/conan-zmq.git"
-    settings = "os", "compiler", "build_type", "arch", "os_build", "arch_build"
+    settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=False"
     exports = "FindZeroMQ.cmake"
